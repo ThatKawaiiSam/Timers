@@ -18,7 +18,6 @@ public abstract class AbstractTimer {
     public void start() {
         startTime = System.currentTimeMillis();
     }
-
     public void start(Long startTime) {
         this.startTime = startTime;
     }

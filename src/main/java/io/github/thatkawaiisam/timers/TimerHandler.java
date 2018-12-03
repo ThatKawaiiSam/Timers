@@ -2,6 +2,7 @@ package io.github.thatkawaiisam.timers;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
@@ -12,17 +13,22 @@ import java.util.Set;
 @Getter @Setter
 public class TimerHandler extends BukkitRunnable {
 
-    private static Set<AbstractTimer> abstractTimers = new HashSet<>();
+    private Set<AbstractTimer> abstractTimers = new HashSet<>();
     private Duration deltaTime = Duration.ZERO;
     private Instant beginTime = Instant.now();
 
-    //TODO start task
+    private JavaPlugin plugin;
 
-    public static void addTimer(AbstractTimer abstractTimer) {
+    public TimerHandler(JavaPlugin plugin) {
+        this.plugin = plugin;
+        //TODO messages
+    }
+
+    public void addTimer(AbstractTimer abstractTimer) {
         abstractTimers.add(abstractTimer);
     }
 
-    public static void removeTimer(AbstractTimer abstractTimer) {
+    public void removeTimer(AbstractTimer abstractTimer) {
         abstractTimers.remove(abstractTimer);
     }
 
