@@ -1,6 +1,8 @@
 package io.github.thatkawaiisam.timers;
 
+import io.github.thatkawaiisam.timers.api.Timer;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -11,45 +13,56 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
+@RequiredArgsConstructor
 public class TimerHandler extends BukkitRunnable {
 
-    private Set<AbstractTimer> abstractTimers = new HashSet<>();
+    private final Set<Timer> timers = new HashSet<>();
+
     private Duration deltaTime = Duration.ZERO;
     private Instant beginTime = Instant.now();
 
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
-    public TimerHandler(JavaPlugin plugin) {
-        this.plugin = plugin;
-        //TODO messages
+    /**
+     * add_timer
+     *
+     * Adds a timer to the {@link TimerHandler#timers} collection
+     *
+     * @param timer The timer to add
+     */
+    public void addTimer(Timer timer) {
+        timers.add(timer);
     }
 
-    public void addTimer(AbstractTimer abstractTimer) {
-        abstractTimers.add(abstractTimer);
-    }
-
-    public void removeTimer(AbstractTimer abstractTimer) {
-        abstractTimers.remove(abstractTimer);
+    /**
+     * remove_timer
+     *
+     * Removes a from to the {@link TimerHandler#timers} collection
+     *
+     * @param timer The timer to remove
+     */
+    public void removeTimer(Timer timer) {
+        timers.remove(timer);
     }
 
     @Override
     public void run() {
-        deltaTime = Duration.between(beginTime, Instant.now());
+        Instant now = Instant.now();
+
+        deltaTime = Duration.between(beginTime, now);
+
         if (deltaTime.getSeconds() > 0) {
-            for (AbstractTimer loopCurrentAbstractTimer : abstractTimers) {
-                if (!loopCurrentAbstractTimer.isPaused()) {
-                    loopCurrentAbstractTimer.tick();
-                }
-            }
-            beginTime = Instant.now();
+            timers.stream()
+                    .filter(timer -> !timer.isPaused())
+                    .forEach(Timer::tick);
+
+            beginTime = now;
         }
-        for (AbstractTimer loopCurrentAbstractTimer : abstractTimers) {
-            if (!loopCurrentAbstractTimer.isPaused()) {
-                if (loopCurrentAbstractTimer.isComplete()) {
-                    loopCurrentAbstractTimer.onComplete();
-                }
-            }
-        }
+
+        timers.stream()
+                .filter(timer -> !timer.isPaused())
+                .filter(Timer::isComplete)
+                .forEach(Timer::onComplete);
     }
 
 }
