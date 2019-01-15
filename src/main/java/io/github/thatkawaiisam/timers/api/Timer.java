@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.concurrent.TimeUnit;
+
 @Getter @Setter
 @RequiredArgsConstructor
 public abstract class Timer {
@@ -33,6 +35,18 @@ public abstract class Timer {
         return type == TimerType.STOPWATCH ?
                 endTime - System.currentTimeMillis() >= 0 :
                 endTime - System.currentTimeMillis() <= 0;
+    }
+
+    public long getSeconds(long time) {
+        return TimeUnit.MILLISECONDS.toSeconds(time);
+    }
+
+    public long getMinutes(long time) {
+        return TimeUnit.MILLISECONDS.toMinutes(time);
+    }
+
+    public long getHours(long time) {
+        return TimeUnit.MILLISECONDS.toHours(time);
     }
 
     /**
