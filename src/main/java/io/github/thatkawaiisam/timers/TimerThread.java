@@ -17,10 +17,10 @@ public class TimerThread extends Thread {
     @Override
     public void run() {
         while(true) {
-            doTimerLogic();
             try {
-                sleep(1000);
-            } catch (InterruptedException e) {
+                doTimerLogic();
+                sleep(25);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -28,6 +28,13 @@ public class TimerThread extends Thread {
 
     private void doTimerLogic() {
         Instant now = Instant.now();
+        if (timerManager == null
+                || now == null) {
+            return;
+        }
+        if (timerManager.getBeginTime() == null) {
+            timerManager.setBeginTime(Instant.now());
+        }
         timerManager.setDeltaTime(Duration.between(timerManager.getBeginTime(), now));
 
         if (timerManager.getDeltaTime().getSeconds() > 0) {
