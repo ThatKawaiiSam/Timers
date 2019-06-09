@@ -1,6 +1,5 @@
 package io.github.thatkawaiisam.timers.api;
 
-import io.github.thatkawaiisam.timers.api.TimerType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,21 +13,25 @@ public abstract class Timer {
     private final TimerType type;
 
     private Long startTime = System.currentTimeMillis();
-    private Long endTime;
+    private Long endTime = System.currentTimeMillis();
 
     private boolean paused = false;
+    private boolean active = false;
 
     public void start() {
         startTime = System.currentTimeMillis();
+        this.onStart();
     }
 
     public void start(Long startTime) {
         this.startTime = startTime;
+        this.onStart();
     }
 
     public void start(Long startTime, Long endTime){
         this.startTime = startTime;
         this.endTime = endTime;
+        this.onStart();
     }
 
     public boolean isComplete() {
