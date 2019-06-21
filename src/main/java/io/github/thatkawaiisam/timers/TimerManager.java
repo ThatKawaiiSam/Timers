@@ -1,27 +1,25 @@
 package io.github.thatkawaiisam.timers;
 
-import com.google.common.collect.Sets;
 import io.github.thatkawaiisam.timers.api.Timer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter @Setter
 @RequiredArgsConstructor
 public class TimerManager {
 
-    private final Set<Timer> timers = Sets.newConcurrentHashSet();
+    private final Set<Timer> timers = ConcurrentHashMap.newKeySet();
     private final TimerThread thread = new TimerThread(this);
 
     private Duration deltaTime = Duration.ZERO;
     private Instant beginTime = Instant.now();
 
-    private final JavaPlugin plugin;
 
     /**
      * add_timer
