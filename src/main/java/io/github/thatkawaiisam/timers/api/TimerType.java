@@ -11,4 +11,8 @@ public enum TimerType {
     STOPWATCH(1);
 
     private final int ordinal;
+
+    public static TimerType fromString(String id) {
+        return TimerType.valueOf(id.toUpperCase());
+    }
 }

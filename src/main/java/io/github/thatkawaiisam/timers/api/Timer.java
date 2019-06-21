@@ -76,4 +76,12 @@ public abstract class Timer {
 
     public abstract void onComplete();
 
+    public static long getRemaining(long endTime) {
+        return endTime - System.currentTimeMillis();
+    }
+
+    public static long getElapsed(long startTime) {
+        return System.currentTimeMillis() - startTime;
+    }
+
 }
