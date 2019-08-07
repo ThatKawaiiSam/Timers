@@ -16,16 +16,24 @@ public abstract class Timer {
     private Long startTime = System.currentTimeMillis();
     private Long endTime = System.currentTimeMillis();
 
+    private Long duration;
+
     private boolean paused = false;
     private boolean active = false;
 
     public void start() {
         startTime = System.currentTimeMillis();
+        if (type == TimerType.COUNTDOWN && duration != null) {
+            this.endTime = System.currentTimeMillis() + duration;
+        }
         this.onStart();
     }
 
     public void start(Long startTime) {
         this.startTime = startTime;
+        if (type == TimerType.COUNTDOWN && duration != null) {
+            this.endTime = System.currentTimeMillis() + duration;
+        }
         this.onStart();
     }
 
