@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class Timer {
 
     private final TimerType type;
+    private final String id;
 
     private Long startTime = System.currentTimeMillis();
     private Long endTime = System.currentTimeMillis();

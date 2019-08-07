@@ -43,6 +43,19 @@ public class TimerManager {
         timers.remove(timer);
     }
 
+    /**
+     * get_timer
+     *
+     * @param id The id of the timer to retrieve
+     * @return timer object
+     */
+    public Timer getTimer(String id) {
+        return getTimers().stream()
+                .filter(timer -> timer.getId().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     public void cleanup() {
         //TODO decide if I should auto end the timers?
         timers.clear();
