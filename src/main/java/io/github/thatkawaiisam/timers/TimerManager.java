@@ -19,7 +19,7 @@ public class TimerManager {
 
     private Duration deltaTime = Duration.ZERO;
     private Instant beginTime = Instant.now();
-
+    private int tickTime = 25;
 
     /**
      * add_timer

@@ -19,7 +19,7 @@ public class TimerThread extends Thread {
         while(true) {
             try {
                 doTimerLogic();
-                sleep(25);
+                sleep(timerManager.getTickTime());
             } catch (Exception e) {
                 e.printStackTrace();
             }
