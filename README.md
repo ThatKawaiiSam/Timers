@@ -28,11 +28,11 @@ public class ExampleTimer extends Timer {
     public void onComplete() {
         Bukkit.broadcastMessage("The countdown is now complete!");
     }
+    
 }
 ```
 
 ### Contact
-
 - MC-Market: https://www.mc-market.org/members/53967/
 - Discord: ThatKawaiiSam#1337
 - Twitter: ThatKawaiiSam

@@ -1,5 +1,6 @@
 package io.github.thatkawaiisam.timers.api;
 
+import io.github.thatkawaiisam.timers.TimerManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class Timer {
 
     private final TimerType type;
-    private final String id;
+    private final TimerManager manager;
 
     private Long startTime = System.currentTimeMillis();
     private Long endTime = System.currentTimeMillis();
@@ -20,27 +21,63 @@ public abstract class Timer {
 
     private boolean paused = false;
     private boolean active = false;
+    private boolean removeOnCompletion = true;
 
     public void start() {
         startTime = System.currentTimeMillis();
-        if (type == TimerType.COUNTDOWN && duration != null) {
-            this.endTime = System.currentTimeMillis() + duration;
-        }
+        checkCachedDuration();
+        checkIfPresent();
         this.onStart();
     }
 
     public void start(Long startTime) {
         this.startTime = startTime;
-        if (type == TimerType.COUNTDOWN && duration != null) {
-            this.endTime = System.currentTimeMillis() + duration;
-        }
+        checkCachedDuration();
+        checkIfPresent();
         this.onStart();
     }
 
     public void start(Long startTime, Long endTime){
         this.startTime = startTime;
         this.endTime = endTime;
+        checkIfPresent();
         this.onStart();
+    }
+
+    public void extend() {
+        if (duration != null) {
+            this.endTime = System.currentTimeMillis() + duration;
+        }
+    }
+
+    public void extend(Long time) {
+        this.endTime = System.currentTimeMillis() + time;
+    }
+
+    public void stop() {
+        manager.removeTimer(this);
+        onCancel();
+    }
+
+    public void stop(boolean triggerCompleteLogic) {
+        manager.removeTimer(this);
+        if (triggerCompleteLogic) {
+            onComplete();
+        } else {
+            onCancel();
+        }
+    }
+
+    private void checkIfPresent() {
+        if (!manager.getTimers().contains(this)) {
+            manager.addTimer(this);
+        }
+    }
+
+    private void checkCachedDuration() {
+        if (type == TimerType.COUNTDOWN && duration != null) {
+            this.endTime = startTime + duration;
+        }
     }
 
     public boolean isComplete() {
@@ -84,6 +121,8 @@ public abstract class Timer {
     public abstract void onStart();
 
     public abstract void onComplete();
+
+    public abstract void onCancel();
 
     public static long getRemaining(long endTime) {
         return endTime - System.currentTimeMillis();

@@ -48,6 +48,11 @@ public class TimerThread extends Thread {
         timerManager.getTimers().stream()
                 .filter(timer -> !timer.isPaused())
                 .filter(Timer::isComplete)
-                .forEach(Timer::onComplete);
+                .forEach(timer -> {
+                    timer.onComplete();
+                    if (timer.isRemoveOnCompletion()) {
+                        timerManager.removeTimer(timer);
+                    }
+                });
     }
 }

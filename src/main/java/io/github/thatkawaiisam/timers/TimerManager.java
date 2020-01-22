@@ -2,7 +2,6 @@ package io.github.thatkawaiisam.timers;
 
 import io.github.thatkawaiisam.timers.api.Timer;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;
@@ -11,7 +10,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter @Setter
-@RequiredArgsConstructor
 public class TimerManager {
 
     private final Set<Timer> timers = ConcurrentHashMap.newKeySet();
@@ -19,11 +17,9 @@ public class TimerManager {
 
     private Duration deltaTime = Duration.ZERO;
     private Instant beginTime = Instant.now();
-    private int tickTime = 25;
+    private int tickTime = 1;
 
     /**
-     * add_timer
-     *
      * Adds a timer to the {@link TimerManager#timers} collection
      *
      * @param timer The timer to add
@@ -33,8 +29,6 @@ public class TimerManager {
     }
 
     /**
-     * remove_timer
-     *
      * Removes a from to the {@link TimerManager#timers} collection
      *
      * @param timer The timer to remove
@@ -43,18 +37,6 @@ public class TimerManager {
         timers.remove(timer);
     }
 
-    /**
-     * get_timer
-     *
-     * @param id The id of the timer to retrieve
-     * @return timer object
-     */
-    public Timer getTimer(String id) {
-        return getTimers().stream()
-                .filter(timer -> timer.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElse(null);
-    }
 
     public void cleanup() {
         //TODO decide if I should auto end the timers?
