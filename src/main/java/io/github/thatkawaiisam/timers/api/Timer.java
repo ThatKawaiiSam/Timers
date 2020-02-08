@@ -20,7 +20,6 @@ public abstract class Timer {
     private Long duration;
 
     private boolean paused = false;
-    private boolean active = false;
     private boolean removeOnCompletion = true;
 
     public void start() {
@@ -81,6 +80,9 @@ public abstract class Timer {
     }
 
     public boolean isComplete() {
+        if (isPaused()) {
+            return false;
+        }
         return type == TimerType.STOPWATCH ?
                 endTime - System.currentTimeMillis() >= 0 :
                 endTime - System.currentTimeMillis() <= 0;
