@@ -37,9 +37,10 @@ public class TimerManager {
         timers.remove(timer);
     }
 
-
+    /**
+     *
+     */
     public void cleanup() {
-        //TODO decide if I should auto end the timers?
         timers.clear();
         this.thread.stop();
     }

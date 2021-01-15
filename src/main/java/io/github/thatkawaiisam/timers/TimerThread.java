@@ -9,6 +9,11 @@ public class TimerThread extends Thread {
 
     private TimerManager timerManager;
 
+    /**
+     * Timer Thread.
+     *
+     * @param timerManager instance.
+     */
     public TimerThread(TimerManager timerManager) {
         this.timerManager = timerManager;
         this.start();
@@ -26,6 +31,9 @@ public class TimerThread extends Thread {
         }
     }
 
+    /**
+     *
+     */
     private void doTimerLogic() {
         final Instant now = Instant.now();
         if (timerManager == null || now == null) {
@@ -40,11 +48,11 @@ public class TimerThread extends Thread {
         if (timerManager.getDeltaTime().getSeconds() > 0) {
             timerManager.getTimers().stream()
                     .filter(timer -> !timer.isPaused())
-                    .forEach(Timer::tick);
+                    .forEach(Timer::onSecond);
             timerManager.setBeginTime(now);
         }
 
-        // Check if timer is complete
+        // Check if timer is complete.
         timerManager.getTimers().stream()
                 .filter(timer -> !timer.isPaused())
                 .filter(Timer::isComplete)

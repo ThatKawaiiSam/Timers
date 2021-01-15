@@ -118,14 +118,6 @@ public abstract class Timer {
         return System.currentTimeMillis() - startTime;
     }
 
-    public abstract void tick();
-
-    public abstract void onStart();
-
-    public abstract void onComplete();
-
-    public abstract void onCancel();
-
     public static long getRemaining(long endTime) {
         return endTime - System.currentTimeMillis();
     }
@@ -133,5 +125,13 @@ public abstract class Timer {
     public static long getElapsed(long startTime) {
         return System.currentTimeMillis() - startTime;
     }
+
+    public abstract void onSecond();
+
+    public abstract void onStart();
+
+    public abstract void onComplete();
+
+    public abstract void onCancel();
 
 }

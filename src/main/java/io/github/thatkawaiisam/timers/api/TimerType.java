@@ -12,7 +12,13 @@ public enum TimerType {
 
     private final int ordinal;
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static TimerType fromString(String id) {
         return TimerType.valueOf(id.toUpperCase());
     }
+
 }
